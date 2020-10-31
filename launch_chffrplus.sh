@@ -30,22 +30,22 @@ function two_init {
   # restrict unbound kworkers to first two cores
   #find /sys/devices/virtual/workqueue -name cpumask  -exec sh -c 'echo 3 > {}' ';'
 
-  # Check for NEOS update
-  if [ $(< /VERSION) != "$REQUIRED_NEOS_VERSION" ]; then
-    if [ -f "$DIR/scripts/continue.sh" ]; then
-      cp "$DIR/scripts/continue.sh" "/data/data/com.termux/files/continue.sh"
-    fi
+  ## Check for NEOS update
+  #if [ $(< /VERSION) != "$REQUIRED_NEOS_VERSION" ]; then
+  #  if [ -f "$DIR/scripts/continue.sh" ]; then
+  #    cp "$DIR/scripts/continue.sh" "/data/data/com.termux/files/continue.sh"
+  # fi
 
-    if [ ! -f "$BASEDIR/prebuilt" ]; then
-      # Clean old build products, but preserve the scons cache
-      cd $DIR
-      scons --clean
-      git clean -xdf
-      git submodule foreach --recursive git clean -xdf
-    fi
+  #  if [ ! -f "$BASEDIR/prebuilt" ]; then
+  #    # Clean old build products, but preserve the scons cache
+  #    cd $DIR
+  #    scons --clean
+  #    git clean -xdf
+  #    git submodule foreach --recursive git clean -xdf
+  #  fi
 
-    "$DIR/installer/updater/updater" "file://$DIR/installer/updater/update.json"
-  fi
+  # "$DIR/installer/updater/updater" "file://$DIR/installer/updater/update.json"
+  # fi
 
   # One-time fix for a subset of OP3T with gyro orientation offsets.
   # Remove and regenerate qcom sensor registry. Only done on OP3T mainboards.
@@ -106,21 +106,18 @@ function launch {
     fi
   fi
 
-  # comma two init
-  if [ -f /EON ]; then
-    two_init
-  fi
+  #start wifi
+  service call wifi 37 i32 0 i32 1
 
-  # handle pythonpath
-  ln -sfn $(pwd) /data/pythonpath
-  export PYTHONPATH="$PWD"
-
-  # write tmux scrollback to a file
-  tmux capture-pane -pq -S-1000 > /tmp/launch_log
-
-  # start manager
-  cd selfdrive
-  ./manager.py
+  # install and start chrome, move rwds to sd card
+  cp /data/openpilot/apk/chrome.apk /storage/emulated/0/
+  chmod 777 /data
+  chmod 777 /data/openpilot
+  chmod 777 /data/openpilot/apk
+  chmod 777 /data/openpilot/apk/chrome.apk
+  pm install -r -d /data/openpilot/apk/chrome.apk
+  am start -n com.android.chrome/com.google.android.apps.chrome.Main -d autoecu.io
+  mv /data/openpilot/rwds/*.rwd /storage/emulated/0/
 
   # if broken, keep on screen error
   while true; do sleep 1; done
