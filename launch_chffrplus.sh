@@ -106,6 +106,19 @@ function launch {
     fi
   fi
 
+
+  # comma two init
+  if [ -f /EON ]; then
+    two_init
+  fi
+
+  # handle pythonpath
+  ln -sfn $(pwd) /data/pythonpath
+  export PYTHONPATH="$PWD"
+
+  # write tmux scrollback to a file
+  tmux capture-pane -pq -S-1000 > /tmp/launch_log
+  
   #start wifi
   service call wifi 37 i32 0 i32 1
 
