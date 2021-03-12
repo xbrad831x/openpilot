@@ -126,7 +126,7 @@ class CarController():
                   hud_lanes, fcw_display, acc_alert, steer_required)
 
     # **** process the car messages ****
-    percent_limit = 0.02
+    percent_limit = 0.01
     if actuators.steer < (self.prev_act - percent_limit):
       self.prev_act = self.prev_act - percent_limit
     elif actuators.steer > (self.prev_act + percent_limit):
