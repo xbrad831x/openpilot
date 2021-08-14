@@ -120,7 +120,7 @@ function launch {
   tmux capture-pane -pq -S-1000 > /tmp/launch_log
   
   #start wifi
-  service call wifi 37 i32 0 i32 1
+  #service call wifi 37 i32 0 i32 1
 
   # install and start chrome, move rwds to sd card
   cp /data/openpilot/apk/chrome.apk /storage/emulated/0/
