@@ -154,7 +154,8 @@ class CarController():
     starting = accel > 0 and CS.out.vEgo < 0.3
 
     # Prevent rolling backwards
-    accel = -1.0 if stopping else accel
+    #accel = -1.0 if stopping else accel
+
     if CS.CP.carFingerprint in HONDA_BOSCH:
       apply_accel = interp(accel, P.BOSCH_ACCEL_LOOKUP_BP, P.BOSCH_ACCEL_LOOKUP_V)
     else:
