@@ -73,6 +73,19 @@ TogglesPanel::TogglesPanel(QWidget *parent) : QWidget(parent) {
                                   "In this mode openpilot will ignore lanelines and just drive how it thinks a human would.",
                                   "../assets/offroad/icon_road.png",
                                   this));
+    
+  toggles.append(new ParamControl("DisableRadar",
+                                  "Enable Vision Radar",
+                                  "Use comma vision as the radar for vehicle detection.",
+                                  "../assets/offroad/icon_road.png",
+                                  this));
+
+  // DAEHAHN - added a new feature to system toggle
+  toggles.append(new ParamControl("EnableGasPedal",  
+                                  "Enable to use Gas Pedal",
+                                  "Enable to use gas pedal while Openpilot engaged.",
+                                  "../assets/offroad/icon_openpilot.png",
+                                  this));
 
 #ifdef ENABLE_MAPS
   toggles.append(new ParamControl("NavSettingTime24h",
