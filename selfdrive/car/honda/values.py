@@ -1295,7 +1295,6 @@ DBC = {
 
 STEER_THRESHOLD = {
   # default is 1200, overrides go here
-  CAR.ACURA_RDX: 400,
   CAR.CRV_EU: 400,
 }
 
