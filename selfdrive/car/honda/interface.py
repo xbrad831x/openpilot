@@ -97,16 +97,11 @@ class CarInterface(CarInterfaceBase):
     ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[0.], [0.]]
     ret.lateralTuning.pid.kf = 0.00006  # conservative feed-forward
 
-    if candidate in HONDA_BOSCH:
-      ret.longitudinalTuning.kpV = [0.25]
-      ret.longitudinalTuning.kiV = [0.05]
-      ret.longitudinalActuatorDelayUpperBound = 0.5 # s
-    else:
-      # default longitudinal tuning for all hondas
-      ret.longitudinalTuning.kpBP = [0., 5., 35.]
-      ret.longitudinalTuning.kpV = [1.2, 0.8, 0.5]
-      ret.longitudinalTuning.kiBP = [0., 35.]
-      ret.longitudinalTuning.kiV = [0.18, 0.12]
+    # default longitudinal tuning for all hondas
+    ret.longitudinalTuning.kpBP = [0., 5., 35.]
+    ret.longitudinalTuning.kpV = [1.2, 0.8, 0.5]
+    ret.longitudinalTuning.kiBP = [0., 35.]
+    ret.longitudinalTuning.kiV = [0.18, 0.12]
 
     eps_modified = False
     for fw in car_fw:
@@ -490,7 +485,7 @@ class CarInterface(CarInterfaceBase):
     else:
       hud_v_cruise = 255
 
-    can_sends = self.CC.update(c.enabled, c.active, self.CS, self.frame,
+    can_sends = self.CC.update(c.enabled, self.CS, self.frame,
                                c.actuators,
                                c.cruiseControl.speedOverride,
                                c.cruiseControl.override,
