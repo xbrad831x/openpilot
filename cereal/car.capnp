@@ -188,6 +188,9 @@ struct CarState {
   # clutch (manual transmission only)
   clutchPressed @28 :Bool;
 
+  lkMode @39 :Bool;
+  engineRPM @40 :Float32;
+
   # which packets this state came from
   canMonoTimes @12: List(UInt64);
 
@@ -196,7 +199,7 @@ struct CarState {
   rightBlindspot @34 :Bool; # Is there something blocking the right lane change
 
   # KRKeegan toyota distance lines
-  distanceLines @39 :UInt8;
+  distanceLines @41 :UInt8;
 
   struct WheelSpeeds {
     # optional wheel speeds
@@ -455,6 +458,7 @@ struct CarParams {
   radarTimeStep @45: Float32 = 0.05;  # time delta between radar updates, 20Hz is very standard
   fingerprintSource @49: FingerprintSource;
   networkLocation @50 :NetworkLocation;  # Where Panda/C2 is integrated into the car's CAN network
+  smartDsu @66 :Bool;  # true if sDSU is detected
 
   wheelSpeedFactor @63 :Float32; # Multiplier on wheels speeds to computer actual speeds
 
