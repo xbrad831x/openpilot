@@ -1,3 +1,26 @@
+![c2ui](https://user-images.githubusercontent.com/46506059/172867782-b1565062-12c8-40e0-bd4b-0a76bac90e4f.jpg)
+*Based off of Keegans stuff*
+*This fork includes the following additions*:
+
+- 3 follow distances, 1.8, 1.45, 1.2 m/s (Toyota only) (Thanks @Keegan)
+- Red mph when braking (Thanks @alexandresato)
+- Brake disc icon when braking (Thanks @Berno22)
+- DevUI with steering angles and lead distance (Thanks @wirelessnet2)
+- Rainbow path (changes colors when turning) 
+- Legacy engage/disgage sounds
+- NEOS 20 for bootloop fix (Thanks @Erich)
+- *TORQUE CONTROLLER* For Toyota's for now. Prius, Corolla, Camry, Rav4, Mirai (toggle) (Thanks @kumar)
+- Steering Fault Fix (Thanks @sshane)
+- No disengage on gas "N.D.O.G." (toggle)
+- Device turns off 3 hours after shutting the car down
+- Modded fw detection and tuning for eps mod, Civics / CRV.
+
+- If this fork has helped you, please consider donating to my paypal: 
+- https://www.paypal.com/donate/?hosted_button_id=ZJQD2YEQEFVHY
+- ![myqrcode](https://user-images.githubusercontent.com/46506059/172424461-c195174a-6450-4b84-ac25-e8632d49fceb.png)
+
+
+
 WARNING
 ------
 
@@ -106,7 +129,7 @@ openpilot is released under the MIT license. Some parts of the software are rele
 WAIVER
 -----
 
-Any user of this software ("User") and anyone claiming on User's behalf releases and forever discharges Kevin Keegan ("Author") and its directors, officers, employees, agents, stockholders, affiliates, subcontractors, software contributors, and customers from any and all claims, liabilities, obligations, promises, agreements, disputes, demands, damages, causes of action of any nature and kind, known or unknown, which User has or ever had or may in the future have against Author or any of the related parties arising our of or relating to the use of any software in this Repository.
+Any user of this software ("User") and anyone claiming on User's behalf releases and forever discharges the "Author" of this fork and its directors, officers, employees, agents, stockholders, affiliates, subcontractors, software contributors, and customers from any and all claims, liabilities, obligations, promises, agreements, disputes, demands, damages, causes of action of any nature and kind, known or unknown, which User has or ever had or may in the future have against Author or any of the related parties arising our of or relating to the use of any software in this Repository.
 
 User shall indemnify and hold harmless Author and its directors, officers, employees, agents, stockholders, affiliates, subcontractors, software contributors, and customers from and against all allegations, claims, actions, suits, demands, damages, liabilities, obligations, losses, settlements, judgments, costs and expenses (including without limitation attorneys’ fees and costs) which arise out of, relate to or result from any use of this software by user.
 
