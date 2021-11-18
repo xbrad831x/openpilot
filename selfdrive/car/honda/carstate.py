@@ -172,9 +172,7 @@ class CarState(CarStateBase):
     self.brake_switch_prev_ts = 0
     self.cruise_setting = 0
     self.v_cruise_pcm_prev = 0
-    
-    self.lkMode = True
-    
+
   def update(self, cp, cp_cam, cp_body):
     ret = car.CarState.new_message()
 
