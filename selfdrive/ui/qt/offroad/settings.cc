@@ -25,57 +25,64 @@
 #include "selfdrive/ui/qt/util.h"
 #include "selfdrive/ui/qt/qt_window.h"
 
-TogglesPanel::TogglesPanel(SettingsWindow *parent) : ListWidget(parent) {
-  // param, title, desc, icon
-  std::vector<std::tuple<QString, QString, QString, QString>> toggles{
-    {
-      "OpenpilotEnabledToggle",
-      "Enable openpilot",
-      "Use the openpilot system for adaptive cruise control and lane keep driver assistance. Your attention is required at all times to use this feature. Changing this setting takes effect when the car is powered off.",
-      "../assets/offroad/icon_openpilot.png",
-    },
-    {
-      "IsLdwEnabled",
-      "Enable Lane Departure Warnings",
-      "Receive alerts to steer back into the lane when your vehicle drifts over a detected lane line without a turn signal activated while driving over 31mph (50kph).",
-      "../assets/offroad/icon_warning.png",
-    },
-    {
-      "IsRHD",
-      "Enable Right-Hand Drive",
-      "Allow openpilot to obey left-hand traffic conventions and perform driver monitoring on right driver seat.",
-      "../assets/offroad/icon_openpilot_mirrored.png",
-    },
-    {
-      "IsMetric",
-      "Use Metric System",
-      "Display speed in km/h instead of mph.",
-      "../assets/offroad/icon_metric.png",
-    },
-    {
-      "CommunityFeaturesToggle",
-      "Enable Community Features",
-      "Use features, such as community supported hardware, from the open source community that are not maintained or supported by comma.ai and have not been confirmed to meet the standard safety model. Be extra cautious when using these features",
-      "../assets/offroad/icon_shell.png",
-    },
-    {
-      "UploadRaw",
-      "Upload Raw Logs",
-      "Upload full logs and full resolution video by default while on Wi-Fi. If not enabled, individual logs can be marked for upload at useradmin.comma.ai.",
-      "../assets/offroad/icon_network.png",
-    },
-    {
-      "RecordFront",
-      "Record and Upload Driver Camera",
-      "Upload data from the driver facing camera and help improve the driver monitoring algorithm.",
-      "../assets/offroad/icon_monitoring.png",
-    },
-    {
-      "EndToEndToggle",
-      "\U0001f96c Disable use of lanelines (Alpha) \U0001f96c",
-      "In this mode openpilot will ignore lanelines and just drive how it thinks a human would.",
-      "../assets/offroad/icon_road.png",
-    },
+TogglesPanel::TogglesPanel(QWidget *parent) : ListWidget(parent) {
+  auto params = Params();
+  addItem(new ParamControl("OpenpilotEnabledToggle",
+                                  "Enable openpilot",
+                                  "Use the openpilot system for adaptive cruise control and lane keep driver assistance. Your attention is required at all times to use this feature. Changing this setting takes effect when the car is powered off.",
+                                  "../assets/offroad/icon_openpilot.png",
+                                  this));
+  addItem(new ParamControl("IsLdwEnabled",
+                                  "Enable Lane Departure Warnings",
+                                  "Receive alerts to steer back into the lane when your vehicle drifts over a detected lane line without a turn signal activated while driving over 31mph (50kph).",
+                                  "../assets/offroad/icon_warning.png",
+                                  this));
+  addItem(new ParamControl("IsRHD",
+                                  "Enable Right-Hand Drive",
+                                  "Allow openpilot to obey left-hand traffic conventions and perform driver monitoring on right driver seat.",
+                                  "../assets/offroad/icon_openpilot_mirrored.png",
+                                  this));
+  addItem(new ParamControl("IsMetric",
+                                  "Use Metric System",
+                                  "Display speed in km/h instead of mph.",
+                                  "../assets/offroad/icon_metric.png",
+                                  this));
+  addItem(new ParamControl("CommunityFeaturesToggle",
+                                  "Enable Community Features",
+                                  "Use features, such as community supported hardware, from the open source community that are not maintained or supported by comma.ai and have not been confirmed to meet the standard safety model. Be extra cautious when using these features",
+                                  "../assets/offroad/icon_shell.png",
+                                  this));
+
+  addItem(new ParamControl("UploadRaw",
+                                  "Upload Raw Logs",
+                                  "Upload full logs and full resolution video by default while on Wi-Fi. If not enabled, individual logs can be marked for upload at useradmin.comma.ai.",
+                                  "../assets/offroad/icon_network.png",
+                                  this));
+
+  ParamControl *record_toggle = new ParamControl("RecordFront",
+                                                 "Record and Upload Driver Camera",
+                                                 "Upload data from the driver facing camera and help improve the driver monitoring algorithm.",
+                                                 "../assets/offroad/icon_monitoring.png",
+                                                 this);
+  addItem(record_toggle);
+  addItem(new ParamControl("EndToEndToggle",
+                                  "\U0001f96c Disable use of lanelines (Alpha) \U0001f96c",
+                                  "In this mode openpilot will ignore lanelines and just drive how it thinks a human would.",
+                                  "../assets/offroad/icon_road.png",
+                                  this));
+
+  addItem(new ParamControl("LqrTune",
+                           "Use LQR Tune",
+                           "Use LQR tuning values. For select Honda's",
+                           "../assets/offroad/icon_openpilot.png",
+                           this));
+    
+  // DAEHAHN - added a new feature to system toggle
+  addItem(new ParamControl("EnableGasPedal",
+                                  "Enable to use Gas Pedal",
+                                  "Enable to use gas pedal while Openpilot engaged.",
+                                  "../assets/offroad/icon_openpilot.png",
+                                  this));
 #ifdef ENABLE_MAPS
     {
       "NavSettingTime24h",

@@ -104,6 +104,7 @@ std::unordered_map<std::string, uint32_t> keys = {
     {"DoShutdown", CLEAR_ON_MANAGER_START},
     {"DoUninstall", CLEAR_ON_MANAGER_START},
     {"EnableWideCamera", CLEAR_ON_MANAGER_START},
+    {"EnableGasPedal", PERSISTENT},
     {"EndToEndToggle", PERSISTENT},
     {"ForcePowerDown", CLEAR_ON_MANAGER_START},
     {"GitBranch", PERSISTENT},
@@ -170,6 +171,7 @@ std::unordered_map<std::string, uint32_t> keys = {
     {"Offroad_TemperatureTooHigh", CLEAR_ON_MANAGER_START},
     {"Offroad_UnofficialHardware", CLEAR_ON_MANAGER_START},
     {"Offroad_UpdateFailed", CLEAR_ON_MANAGER_START},
+    {"LqrTune", PERSISTENT},
 };
 
 } // namespace
