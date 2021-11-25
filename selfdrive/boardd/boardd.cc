@@ -173,7 +173,11 @@ bool safety_setter_thread(std::vector<Panda *> pandas) {
       safety_param = 0;
     }
 
-  panda->set_unsafe_mode(1);  // see safety_declarations.h for allowed values
+    LOGW("panda %d: setting safety model: %d with param %d", i, (int)safety_model, safety_param);
+
+    panda->set_unsafe_mode(1);  // see safety_declarations.h for allowed values
+    panda->set_safety_model(safety_model, safety_param);
+   }
 
   return true;
 }
