@@ -18,6 +18,7 @@ MAX_STEER_RATE_FRAMES = 19
 class CarController:
   def __init__(self, dbc_name, CP, VM):
     self.CP = CP
+    self.torque_rate_limits = CarControllerParams(self.CP)
     self.frame = 0
     self.last_steer = 0
     self.alert_active = False
@@ -56,7 +57,7 @@ class CarController:
 
     # steer torque
     new_steer = int(round(actuators.steer * CarControllerParams.STEER_MAX))
-    apply_steer = apply_toyota_steer_torque_limits(new_steer, self.last_steer, CS.out.steeringTorqueEps, CarControllerParams)
+    apply_steer = apply_toyota_steer_torque_limits(new_steer, self.last_steer, CS.out.steeringTorqueEps, self.torque_rate_limits)
     self.steer_rate_limited = new_steer != apply_steer
 
     # EPS_STATUS->LKA_STATE either goes to 21 or 25 on rising edge of a steering fault and
