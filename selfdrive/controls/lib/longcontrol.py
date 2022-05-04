@@ -11,6 +11,14 @@ LongCtrlState = car.CarControl.Actuators.LongControlState
 ACCEL_MIN_ISO = -3.5  # m/s^2
 ACCEL_MAX_ISO = 2.0  # m/s^2
 
+def apply_deadzone(error, deadzone):
+  if error > deadzone:
+    error -= deadzone
+  elif error < - deadzone:
+    error += deadzone
+  else:
+    error = 0.
+  return error
 
 def apply_deadzone(error, deadzone):
   if error > deadzone:
