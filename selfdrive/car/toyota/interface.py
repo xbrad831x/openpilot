@@ -42,9 +42,11 @@ class CarInterface(CarInterfaceBase):
       ret.steerRatio = 15.74   # unknown end-to-end spec
       tire_stiffness_factor = 0.6371   # hand-tune
       ret.mass = 3045. * CV.LB_TO_KG + STD_CARGO_KG
-
-      set_lat_tune(ret.lateralTuning, LatTunes.INDI_PRIUS)
-      ret.steerActuatorDelay = 0.3
+      if Params().get_bool('Torque'):
+        set_lat_tune(ret.lateralTuning, LatTunes.TORQUE, MAX_LAT_ACCEL=1.7, FRICTION=0.06)
+      else:
+        set_lat_tune(ret.lateralTuning, LatTunes.INDI_PRIUS)
+        ret.steerActuatorDelay = 0.3
 
     elif candidate == CAR.PRIUS_V:
       stop_and_go = True
@@ -52,7 +54,7 @@ class CarInterface(CarInterfaceBase):
       ret.steerRatio = 17.4
       tire_stiffness_factor = 0.5533
       ret.mass = 4387. * CV.LB_TO_KG + STD_CARGO_KG
-      set_lat_tune(ret.lateralTuning, LatTunes.LQR_RAV4)
+      set_lat_tune(ret.lateralTuning, LatTunes.TORQUE, MAX_LAT_ACCEL=1.8, FRICTION=0.06)
 
     elif candidate in (CAR.RAV4, CAR.RAV4H):
       stop_and_go = True if (candidate in CAR.RAV4H) else False
@@ -60,14 +62,17 @@ class CarInterface(CarInterfaceBase):
       ret.steerRatio = 16.88   # 14.5 is spec end-to-end
       tire_stiffness_factor = 0.5533
       ret.mass = 3650. * CV.LB_TO_KG + STD_CARGO_KG  # mean between normal and hybrid
-      set_lat_tune(ret.lateralTuning, LatTunes.LQR_RAV4)
+      set_lat_tune(ret.lateralTuning, LatTunes.TORQUE, MAX_LAT_ACCEL=1.8, FRICTION=0.06)
 
     elif candidate == CAR.COROLLA:
       ret.wheelbase = 2.70
       ret.steerRatio = 18.27
       tire_stiffness_factor = 0.444  # not optimized yet
       ret.mass = 2860. * CV.LB_TO_KG + STD_CARGO_KG  # mean between normal and hybrid
-      set_lat_tune(ret.lateralTuning, LatTunes.PID_A)
+      if Params().get_bool('Torque'):
+        set_lat_tune(ret.lateralTuning, LatTunes.TORQUE, MAX_LAT_ACCEL=2.7, FRICTION=0.023)
+      else:
+        set_lat_tune(ret.lateralTuning, LatTunes.PID_A)
 
     elif candidate in (CAR.LEXUS_RX, CAR.LEXUS_RXH, CAR.LEXUS_RX_TSS2, CAR.LEXUS_RXH_TSS2):
       stop_and_go = True
@@ -93,10 +98,7 @@ class CarInterface(CarInterfaceBase):
       tire_stiffness_factor = 0.7933
       ret.mass = 3400. * CV.LB_TO_KG + STD_CARGO_KG  # mean between normal and hybrid
       if Params().get_bool('LqrTune'):
-        set_lat_tune(ret.lateralTuning, LatTunes.INDI_PRIUS_TSS2)
-        ret.steerActuatorDelay = 0.3
-        ret.steerRateCost = 1.25
-        ret.steerLimitTimer = 0.5
+        set_lat_tune(ret.lateralTuning, LatTunes.TORQUE, MAX_LAT_ACCEL=2.4, FRICTION=0.05)
       else:
         set_lat_tune(ret.lateralTuning, LatTunes.PID_C)
 
@@ -130,10 +132,7 @@ class CarInterface(CarInterfaceBase):
       tire_stiffness_factor = 0.7933
       ret.mass = 3585. * CV.LB_TO_KG + STD_CARGO_KG  # Average between ICE and Hybrid
       if Params().get_bool('LqrTune'):
-        set_lat_tune(ret.lateralTuning, LatTunes.INDI_RAV4_TSS2)
-        ret.steerActuatorDelay = 0.3
-        ret.steerRateCost = 1.25
-        ret.steerLimitTimer = 0.5
+        set_lat_tune(ret.lateralTuning, LatTunes.TORQUE, MAX_LAT_ACCEL=2.5, FRICTION=0.06)
       else:
         set_lat_tune(ret.lateralTuning, LatTunes.PID_D)
 
@@ -142,10 +141,7 @@ class CarInterface(CarInterfaceBase):
       for fw in car_fw:
         if fw.ecu == "eps" and (fw.fwVersion.startswith(b'\x02') or fw.fwVersion in [b'8965B42181\x00\x00\x00\x00\x00\x00']):
           if Params().get_bool('LqrTune'):
-            set_lat_tune(ret.lateralTuning, LatTunes.INDI_RAV4_TSS2)
-            ret.steerActuatorDelay = 0.3
-            ret.steerRateCost = 1.25
-            ret.steerLimitTimer = 0.5
+            set_lat_tune(ret.lateralTuning, LatTunes.TORQUE, MAX_TORQUE=3.3, FRICTION=0.061)
           else:
             set_lat_tune(ret.lateralTuning, LatTunes.PID_I)
           break
@@ -156,7 +152,10 @@ class CarInterface(CarInterfaceBase):
       ret.steerRatio = 13.9
       tire_stiffness_factor = 0.444  # not optimized yet
       ret.mass = 3060. * CV.LB_TO_KG + STD_CARGO_KG
-      set_lat_tune(ret.lateralTuning, LatTunes.PID_D)
+      if Params().get_bool('Torque'):
+        set_lat_tune(ret.lateralTuning, LatTunes.TORQUE, MAX_LAT_ACCEL=2.0, FRICTION=0.06)
+      else:
+        set_lat_tune(ret.lateralTuning, LatTunes.PID_D)
 
     elif candidate in (CAR.LEXUS_ES_TSS2, CAR.LEXUS_ESH_TSS2, CAR.LEXUS_ESH):
       stop_and_go = True
@@ -203,11 +202,8 @@ class CarInterface(CarInterfaceBase):
       ret.steerRatio = 13.4   # unknown end-to-end spec
       tire_stiffness_factor = 0.6371   # hand-tune
       ret.mass = 3115. * CV.LB_TO_KG + STD_CARGO_KG
-      if Params().get_bool('LqrTune'):
-        set_lat_tune(ret.lateralTuning, LatTunes.INDI_PRIUS_TSS2)
-        ret.steerActuatorDelay = 0.3
-        ret.steerRateCost = 1.25
-        ret.steerLimitTimer = 0.5
+      if Params().get_bool('Torque'):
+        set_lat_tune(ret.lateralTuning, LatTunes.TORQUE, MAX_LAT_ACCEL=2.009141, FRICTION=0.112391)
       else:
         set_lat_tune(ret.lateralTuning, LatTunes.PID_N)
 
@@ -217,7 +213,10 @@ class CarInterface(CarInterfaceBase):
       ret.steerRatio = 14.8
       tire_stiffness_factor = 0.8
       ret.mass = 4300. * CV.LB_TO_KG + STD_CARGO_KG
-      set_lat_tune(ret.lateralTuning, LatTunes.PID_C)
+      if Params().get_bool('Torque'):
+        set_lat_tune(ret.lateralTuning, LatTunes.TORQUE, MAX_LAT_ACCEL=2.4, FRICTION=0.08)
+      else:
+        set_lat_tune(ret.lateralTuning, LatTunes.PID_C)
 
     elif candidate == CAR.ALPHARD_TSS2:
       stop_and_go = True
