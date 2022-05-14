@@ -11,6 +11,9 @@ from opendbc.can.packer import CANPacker
 
 VisualAlert = car.CarControl.HUDControl.VisualAlert
 
+# constants for fault workaround
+MAX_STEER_RATE = 100  # deg/s
+MAX_STEER_RATE_FRAMES = 19
 
 class CarController:
   def __init__(self, dbc_name, CP, VM):
@@ -22,7 +25,7 @@ class CarController:
     self.standstill_req = False
     self.steer_rate_limited = False
     self.CP = CP
-
+    self.steer_rate_counter = 0
     self.packer = CANPacker(dbc_name)
     self.gas = 0
     self.accel = 0
@@ -56,12 +59,22 @@ class CarController:
     apply_steer = apply_toyota_steer_torque_limits(new_steer, self.last_steer, CS.out.steeringTorqueEps, CarControllerParams)
     self.steer_rate_limited = new_steer != apply_steer
 
+    # EPS_STATUS->LKA_STATE either goes to 21 or 25 on rising edge of a steering fault and
+    # the value seems to describe how many frames the steering rate was above 100 deg/s, so
+    # cut torque with some margin for the lower state
+    if active and abs(CS.out.steeringRateDeg) >= MAX_STEER_RATE:
+      self.steer_rate_counter += 1
+    else:
+      self.steer_rate_counter = 0
+
+    apply_steer_req = 1
     # Cut steering while we're in a known fault state (2s)
-    if not CC.latActive or CS.steer_state in (9, 25):
+    if not active: # or CS.steer_state in (9, 25) or abs(CS.out.steeringRateDeg) > 100 or (abs(CS.out.steeringAngleDeg) > 150 and CS.CP.carFingerprint in [CAR.RAV4H, CAR.PRIUS]):
       apply_steer = 0
       apply_steer_req = 0
-    else:
-      apply_steer_req = 1
+    elif self.steer_rate_counter > MAX_STEER_RATE_FRAMES:
+      apply_steer_req = 0
+      self.steer_rate_counter = 0
 
     # TODO: probably can delete this. CS.pcm_acc_status uses a different signal
     # than CS.cruiseState.enabled. confirm they're not meaningfully different
