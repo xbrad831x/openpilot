@@ -109,6 +109,14 @@ static void update_state(UIState *s) {
   SubMaster &sm = *(s->sm);
   UIScene &scene = s->scene;
 
+  if (sm.updated("carState")) {
+    s->scene.steeringPressed = sm["carState"].getCarState().getSteeringPressed();
+  }
+  if (sm.updated("controlsState")) {
+    auto controls_state = sm["controlsState"].getControlsState();
+    s->scene.enabled = controls_state.getEnabled();
+    s->scene.pidStateOutput = controls_state.getLateralControlState().getPidState().getOutput();
+  }
   if (sm.updated("liveCalibration")) {
     auto rpy_list = sm["liveCalibration"].getLiveCalibration().getRpyCalib();
     Eigen::Vector3d rpy;
@@ -227,7 +235,7 @@ UIState::UIState(QObject *parent) : QObject(parent) {
   sm = std::make_unique<SubMaster, const std::initializer_list<const char *>>({
     "modelV2", "controlsState", "liveCalibration", "radarState", "deviceState", "roadCameraState",
     "pandaStates", "carParams", "driverMonitoringState", "sensorEvents", "carState", "liveLocationKalman",
-    "wideRoadCameraState",
+    "wideRoadCameraState", "managerState", "carControl",
   });
 
   Params params;
