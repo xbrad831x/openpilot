@@ -80,7 +80,7 @@ TogglesPanel::TogglesPanel(SettingsWindow *parent) : ListWidget(parent) {
     {
       "Torque",
       "Use Torque Tune",
-      "Rav4, Prius and Camry can switch on/off. Most other Toyotas are default ON..",
+      "TSS-P/2.0 Prius', TSS-P/2.0 Corolla's, TSS2.0 Rav4's, TSS-P/2.0 Camry's, TSS2.0 Mirai can switch on/off.",
       "../assets/offroad/icon_openpilot.png",
     },
 #ifdef ENABLE_MAPS
