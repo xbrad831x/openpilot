@@ -78,9 +78,9 @@ TogglesPanel::TogglesPanel(SettingsWindow *parent) : ListWidget(parent) {
       "../assets/offroad/icon_road.png",
     },
     {
-      "LqrTune",
-      "Use LQR/INDI Tune",
-      "Use LQR tuning values for select Hondas. Use INDI for select Toyotas..",
+      "Torque",
+      "Use Torque Tune",
+      "Rav4, Prius and Camry can switch on/off. Most other Toyotas are default ON..",
       "../assets/offroad/icon_openpilot.png",
     },
 #ifdef ENABLE_MAPS
