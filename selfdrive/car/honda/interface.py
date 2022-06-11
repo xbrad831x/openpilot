@@ -259,7 +259,7 @@ class CarInterface(CarInterfaceBase):
       ret.mass = 4068. * CV.LB_TO_KG + STD_CARGO_KG
       ret.wheelbase = 2.75
       ret.centerToFront = ret.wheelbase * 0.41
-      ret.steerRatio = 16.0 #11.95 is spec
+      ret.steerRatio = 11.95  # as spec
       ret.lateralParams.torqueBP, ret.lateralParams.torqueV = [[0, 3840], [0, 3840]]
       if Params().get_bool('Torque'):
         MAX_LAT_ACCEL = 1.0

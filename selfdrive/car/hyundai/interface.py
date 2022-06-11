@@ -234,6 +234,7 @@ class CarInterface(CarInterfaceBase):
       else:
         ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[0.], [0.]]
         ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.25], [0.05]]
+
       if candidate not in (CAR.IONIQ_EV_2020, CAR.IONIQ_PHEV, CAR.IONIQ_HEV_2022):
         ret.minSteerSpeed = 32 * CV.MPH_TO_MS
         
@@ -387,19 +388,8 @@ class CarInterface(CarInterfaceBase):
       ret.wheelbase = 2.85
       ret.steerRatio = 13.27  # 2021 Kia K5 Steering Ratio (all trims)
       tire_stiffness_factor = 0.5
-      if Params().get_bool('Torque'):
-        MAX_LAT_ACCEL = 2.0
-        friction = 0.05
-
-        ret.lateralTuning.init('torque')
-        ret.lateralTuning.torque.useSteeringAngle = True
-        ret.lateralTuning.torque.kp = 1.0 / MAX_LAT_ACCEL
-        ret.lateralTuning.torque.kf = 1.0 / MAX_LAT_ACCEL
-        ret.lateralTuning.torque.ki = 0.1 / MAX_LAT_ACCEL
-        ret.lateralTuning.torque.friction = friction
-      else:
-        ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[0.], [0.]]
-        ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.25], [0.05]]
+      ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[0.], [0.]]
+      ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.25], [0.05]]
 
     # Genesis
     elif candidate == CAR.GENESIS_G70:
