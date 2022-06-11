@@ -136,7 +136,7 @@ class CarInterface(CarInterfaceBase):
       tire_stiffness_factor = 0.7933
       ret.mass = 3585. * CV.LB_TO_KG + STD_CARGO_KG  # Average between ICE and Hybrid
       if Params().get_bool('Torque'):
-        set_lat_tune(ret.lateralTuning, LatTunes.TORQUE, MAX_LAT_ACCEL=2.4, FRICTION=0.05)
+        set_lat_tune(ret.lateralTuning, LatTunes.TORQUE, MAX_LAT_ACCEL=2.5, FRICTION=0.06)
       else:
         set_lat_tune(ret.lateralTuning, LatTunes.PID_D)
 
@@ -144,8 +144,8 @@ class CarInterface(CarInterfaceBase):
       # See https://github.com/commaai/openpilot/pull/21429#issuecomment-873652891
       for fw in car_fw:
         if fw.ecu == "eps" and (fw.fwVersion.startswith(b'\x02') or fw.fwVersion in [b'8965B42181\x00\x00\x00\x00\x00\x00']):
-          if Params().get_bool('LqrTune'):
-            set_lat_tune(ret.lateralTuning, LatTunes.TORQUE, MAX_TORQUE=3.3, FRICTION=0.061)
+          if Params().get_bool('Torque'):
+            set_lat_tune(ret.lateralTuning, LatTunes.TORQUE, MAX_LAT_ACCEL=3.3, FRICTION=0.061)
           else:
             set_lat_tune(ret.lateralTuning, LatTunes.PID_I)
           break
