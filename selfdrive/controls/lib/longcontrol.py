@@ -1,7 +1,7 @@
 from cereal import car
 from common.numpy_fast import clip, interp
 from common.realtime import DT_CTRL
-from selfdrive.controls.lib.drive_helpers import CONTROL_N
+from selfdrive.controls.lib.drive_helpers import CONTROL_N, apply_deadzone
 from selfdrive.controls.lib.pid import PIDController
 from selfdrive.modeld.constants import T_IDXS
 
@@ -19,16 +19,6 @@ def apply_deadzone(error, deadzone):
   else:
     error = 0.
   return error
-
-def apply_deadzone(error, deadzone):
-  if error > deadzone:
-    error -= deadzone
-  elif error < - deadzone:
-    error += deadzone
-  else:
-    error = 0.
-  return error
-
 
 def long_control_state_trans(CP, active, long_control_state, v_ego, v_target,
                              v_target_future, brake_pressed, cruise_standstill):
