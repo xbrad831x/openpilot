@@ -207,7 +207,9 @@ void UIState::updateStatus() {
       scene.enabled = controls_state.getEnabled();
     }
 
-    scene.pidStateOutput = controls_state.getLateralControlState().getPidState().getOutput();
+    scene.pidStateOutput =
+      controls_state.getLateralControlState().getPidState().getOutput();
+      controls_state.getLateralControlState().getTorqueState().getOutput();
   }
 
   if (sm->updated("carState")) {
