@@ -210,6 +210,7 @@ void UIState::updateStatus() {
     scene.pidStateOutput =
       controls_state.getLateralControlState().getPidState().getOutput();
       controls_state.getLateralControlState().getTorqueState().getOutput();
+      controls_state.getLateralControlState().getIndiState().getOutput();
   }
 
   if (sm->updated("carState")) {
