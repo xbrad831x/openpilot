@@ -494,9 +494,9 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
   },
 
   # Thrown when the fan is driven at >50% but is not rotating
-  EventName.fanMalfunction: {
-    ET.PERMANENT: NormalPermanentAlert("Fan Malfunction", "Contact Support"),
-  },
+  #EventName.fanMalfunction: {
+  #  ET.PERMANENT: NormalPermanentAlert("Fan Malfunction", "Contact Support"),
+  #},
 
   # Camera is not outputting frames at a constant framerate
   EventName.cameraMalfunction: {
