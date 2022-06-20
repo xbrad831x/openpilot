@@ -138,7 +138,7 @@ class CarInterface(CarInterfaceBase):
       if Params().get_bool('Torque'):
         set_lat_tune(ret.lateralTuning, LatTunes.TORQUE, MAX_LAT_ACCEL=2.5, FRICTION=0.06)
       else:
-        set_lat_tune(ret.lateralTuning, LatTunes.PID_D)
+        set_lat_tune(ret.lateralTuning, LatTunes.INDI_RAV4_TSS2)
 
       # 2019+ Rav4 TSS2 uses two different steering racks and specific tuning seems to be necessary.
       # See https://github.com/commaai/openpilot/pull/21429#issuecomment-873652891
@@ -147,7 +147,7 @@ class CarInterface(CarInterfaceBase):
           if Params().get_bool('Torque'):
             set_lat_tune(ret.lateralTuning, LatTunes.TORQUE, MAX_LAT_ACCEL=3.3, FRICTION=0.061)
           else:
-            set_lat_tune(ret.lateralTuning, LatTunes.PID_I)
+            set_lat_tune(ret.lateralTuning, INDI_RAV4_TSS2)
           break
 
     elif candidate in (CAR.COROLLA_TSS2, CAR.COROLLAH_TSS2):
@@ -159,7 +159,7 @@ class CarInterface(CarInterfaceBase):
       if Params().get_bool('Torque'):
         set_lat_tune(ret.lateralTuning, LatTunes.TORQUE, MAX_LAT_ACCEL=2.0, FRICTION=0.06)
       else:
-        set_lat_tune(ret.lateralTuning, LatTunes.PID_D)
+        set_lat_tune(ret.lateralTuning, LatTunes.INDI_COROLLA_TSS2)
 
     elif candidate in (CAR.LEXUS_ES_TSS2, CAR.LEXUS_ESH_TSS2, CAR.LEXUS_ESH):
       stop_and_go = True
@@ -209,7 +209,10 @@ class CarInterface(CarInterfaceBase):
       if Params().get_bool('Torque'):
         set_lat_tune(ret.lateralTuning, LatTunes.TORQUE, MAX_LAT_ACCEL=2.009141, FRICTION=0.112391)
       else:
-        set_lat_tune(ret.lateralTuning, LatTunes.PID_N)
+        set_lat_tune(ret.lateralTuning, LatTunes.INDI_PRIUS_TSS2)
+        ret.steerActuatorDelay = 0.3
+        ret.steerRateCost = 1.25
+        ret.steerLimitTimer = 0.5
 
     elif candidate == CAR.MIRAI:
       stop_and_go = True
