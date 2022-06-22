@@ -68,8 +68,7 @@ class CarController:
       self.steer_rate_counter = 0
 
     apply_steer_req = 1
-    # Cut steering while we're in a known fault state (2s)
-    if not CC.latActive: # or CS.steer_state in (9, 25) or abs(CS.out.steeringRateDeg) > 100 or (abs(CS.out.steeringAngleDeg) > 150 and CS.CP.carFingerprint in [CAR.RAV4H, CAR.PRIUS]):
+    if not CC.latActive:
       apply_steer = 0
       apply_steer_req = 0
     elif self.steer_rate_counter > MAX_STEER_RATE_FRAMES:
