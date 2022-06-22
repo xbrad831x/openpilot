@@ -67,10 +67,7 @@ class LatControlTorque(LatControl):
                                       feedforward=ff,
                                       speed=CS.vEgo,
                                       freeze_integrator=freeze_integrator)
-
-      friction_compensation = interp(desired_lateral_jerk, [-JERK_THRESHOLD, JERK_THRESHOLD], [-self.friction, self.friction])
-      output_torque += friction_compensation
-
+                                      
       pid_log.active = True
       pid_log.p = self.pid.p
       pid_log.i = self.pid.i
