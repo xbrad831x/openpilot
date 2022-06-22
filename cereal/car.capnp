@@ -445,9 +445,9 @@ struct CarParams {
   lateralTuning :union {
     pid @26 :LateralPIDTuning;
     indi @27 :LateralINDITuning;
-    torque @28 :LateralTorqueTuning;
     lqr @40 :LateralLQRTuning;
 
+    torque @66 :LateralTorqueTuning;
   }
 
   steerLimitAlert @28 :Bool;
