@@ -253,7 +253,6 @@ static int toyota_tx_hook(CANPacket_t *to_send, bool longitudinal_allowed) {
 
       // reset to 0 if either controls is not allowed or there's a violation
       if (violation || !controls_allowed) {
-        toyota_steer_req_matches = 0U;
         desired_torque_last = 0;
         rt_torque_last = 0;
         ts_last = ts;
@@ -270,7 +269,7 @@ static int toyota_tx_hook(CANPacket_t *to_send, bool longitudinal_allowed) {
 
 static const addr_checks* toyota_init(int16_t param) {
   controls_allowed = 0;
-  toyota_steer_req_matches = 0U;
+  toyota_steer_req_matches = 0;
   relay_malfunction_reset();
   gas_interceptor_detected = 0;
   toyota_dbc_eps_torque_factor = param;
