@@ -571,7 +571,7 @@ class Controls:
                                                                              lat_plan.curvatureRates)
       actuators.steer, actuators.steeringAngleDeg, lac_log = self.LaC.update(CC.latActive, CS, self.VM, params,
                                                                              self.last_actuators, desired_curvature,
-                                                                             desired_curvature_rate, self.sm['liveLocationKalman be'], llk)
+                                                                             desired_curvature_rate, self.sm['liveLocationKalman'], llk)
     else:
       lac_log = log.ControlsState.LateralDebugState.new_message()
       if self.sm.rcv_frame['testJoystick'] > 0:
