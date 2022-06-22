@@ -649,18 +649,6 @@ struct ControlsState @0x97ff69c53601abf1 {
     saturated @7 :Bool;
    }
 
-   struct LateralTorqueState {
-     active @0 :Bool;
-     error @1 :Float32;
-     errorRate @8 :Float32;
-     p @2 :Float32;
-     i @3 :Float32;
-     d @4 :Float32;
-     f @5 :Float32;
-     output @6 :Float32;
-     saturated @7 :Bool;
-    }
-
   struct LateralLQRState {
     active @0 :Bool;
     steeringAngleDeg @1 :Float32;
