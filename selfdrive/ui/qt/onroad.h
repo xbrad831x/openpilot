@@ -73,46 +73,8 @@ private:
 class NvgWindow : public CameraViewWidget {
   Q_OBJECT
 
-  Q_PROPERTY(bool braking MEMBER braking);
-  Q_PROPERTY(int lead_status MEMBER lead_status);
-  Q_PROPERTY(float lead_d_rel MEMBER lead_d_rel);
-  Q_PROPERTY(float lead_v_rel MEMBER lead_v_rel);
-  Q_PROPERTY(float angleSteers MEMBER angleSteers);
-  Q_PROPERTY(float steerAngleDesired MEMBER steerAngleDesired);
-  Q_PROPERTY(int engineRPM MEMBER engineRPM);
-
 public:
   explicit NvgWindow(VisionStreamType type, QWidget* parent = 0);
-  void updateState(const UIState &s);
-
-private:
-  void drawIcon(QPainter &p, int x, int y, QPixmap &img, QBrush bg, float opacity);
-  void drawText(QPainter &p, int x, int y, const QString &text, int alpha = 255);
-  void drawLeftDevUi(QPainter &p, int x, int y);
-  int devUiDrawElement(QPainter &p, int x, int y, const char* value, const char* label, const char* units, QColor &color);
-  void drawColoredText(QPainter &p, int x, int y, const QString &text, QColor &color);
-
-  QPixmap engage_img;
-  QPixmap dm_img;
-  QPixmap brake_img;
-  const int radius = 160;
-  const int img_size = (radius / 2) * 1.5;
-  QString speed;
-  QString speedUnit;
-  QString maxSpeed;
-  bool is_cruise_set = false;
-  bool engageable = false;
-  bool dmActive = false;
-  bool hideDM = false;
-  int status = STATUS_DISENGAGED;
-
-  bool braking = false;
-  int lead_status;
-  float lead_d_rel = 0;
-  float lead_v_rel = 0;
-  float angleSteers = 0;
-  float steerAngleDesired = 0;
-  int engineRPM = 0;
 
 protected:
   void paintGL() override;

@@ -197,10 +197,6 @@ struct CarState {
   # clutch (manual transmission only)
   clutchPressed @28 :Bool;
 
-  lkMode @41 :Bool;
-  engineRPM @42 :Float32;
-  brakeToggle @43 :Bool;
-
   # which packets this state came from
   canMonoTimes @12: List(UInt64);
 

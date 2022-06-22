@@ -380,10 +380,6 @@ class CarInterface(CarInterfaceBase):
   def _update(self, c):
     ret = self.CS.update(self.cp, self.cp_cam, self.cp_body)
 
-
-    ret.lkMode = self.CS.lkMode
-    ret.engineRPM = self.CS.engineRPM
-
     buttonEvents = []
 
     if self.CS.cruise_buttons != self.CS.prev_cruise_buttons:
