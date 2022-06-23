@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from enum import Enum
-
+from selfdrive.controls.lib.latcontrol_torque import set_torque_tune
 
 class LongTunes(Enum):
   PEDAL = 0
@@ -53,14 +53,9 @@ def set_long_tune(tune, name):
 
 
 ###### LAT ######
-def set_lat_tune(tune, name, MAX_LAT_ACCEL=2.5, FRICTION=.1):
+def set_lat_tune(tune, name, MAX_LAT_ACCEL=2.5, FRICTION=0.01, steering_angle_deadzone_deg=0.0, use_steering_angle=True):
   if name == LatTunes.TORQUE:
-    tune.init('torque')
-    tune.torque.useSteeringAngle = True
-    tune.torque.kp = 1.0 / MAX_LAT_ACCEL
-    tune.torque.kf = 1.0 / MAX_LAT_ACCEL
-    tune.torque.ki = 0.1 / MAX_LAT_ACCEL
-    tune.torque.friction = FRICTION
+    set_torque_tune(tune, MAX_LAT_ACCEL, FRICTION, steering_angle_deadzone_deg)
     
   elif name == LatTunes.INDI_PRIUS:
     tune.init('indi')
