@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from enum import Enum
-
+from selfdrive.controls.lib.latcontrol_torque import set_torque_tune
 
 class LongTunes(Enum):
   PEDAL = 0
