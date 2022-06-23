@@ -4,6 +4,7 @@ from panda import Panda
 from common.conversions import Conversions as CV
 from common.numpy_fast import interp
 from common.params import Params
+from selfdrive.controls.lib.latcontrol_torque import set_torque_tune
 from selfdrive.car.honda.values import CarControllerParams, CruiseButtons, HondaFlags, CAR, HONDA_BOSCH, HONDA_NIDEC_ALT_SCM_MESSAGES, HONDA_BOSCH_ALT_BRAKE_SIGNAL
 from selfdrive.car import STD_CARGO_KG, CivicParams, scale_rot_inertia, scale_tire_stiffness, gen_empty_fingerprint, get_safety_config
 from selfdrive.car.interfaces import CarInterfaceBase
@@ -90,8 +91,8 @@ class CarInterface(CarInterfaceBase):
       ret.centerToFront = CivicParams.CENTER_TO_FRONT
       ret.steerRatio = 15.38  # 10.93 is end-to-end spec
       if Params().get_bool('Torque'):
-        MAX_LAT_ACCEL = 1.7
-        friction = 0.087112
+        MAX_LAT_ACCEL = 1.7 if eps_modified else 1.0
+        friction = 0.087112 if eps_modified else 0.1
 
         ret.lateralTuning.init('torque')
         ret.lateralTuning.torque.useSteeringAngle = True
