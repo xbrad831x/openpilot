@@ -18,7 +18,7 @@ MAX_STEER_RATE_FRAMES = 19
 class CarController:
   def __init__(self, dbc_name, CP, VM):
     self.CP = CP
-    self.torque_rate_limits = CarControllerParams(self.CP)
+    self.torque_rate_limits = CarControllerParams
     self.frame = 0
     self.last_steer = 0
     self.alert_active = False
