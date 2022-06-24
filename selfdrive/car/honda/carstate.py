@@ -89,6 +89,8 @@ def get_can_signals(CP, gearbox_msg, main_on_sig_msg):
         ("CRUISE_SPEED", "ACC_HUD"),
         ("ACCEL_COMMAND", "ACC_CONTROL"),
         ("AEB_STATUS", "ACC_CONTROL"),
+        #brakelights for HONDA BOSCH
+        ("BRAKE_LIGHTS", "ACC_CONTROL"),
       ]
       checks += [
         ("ACC_HUD", 10),
