@@ -430,7 +430,7 @@ void OnroadHud::drawSpeedSign(QPainter &p, QRect rc, const QString &speed_limit,
   drawCircle(p, x, y, int(r * 0.8f), inner_color);
 
   configFont(p, "Open Sans", 89, "Bold");
-  drawCenteredText(p, x, y + 5, speed_limit, text_color);
+  drawCenteredText(p, x, y + 10, speed_limit, text_color);
   configFont(p, "Open Sans", subtext_size, "Bold");
   drawCenteredText(p, x, y + 55, sub_text, text_color);
 
