@@ -2,12 +2,15 @@
 *Based off of Keegans stuff*
 *This 0.8.14 fork includes the following additions*:
 
+- *NEW* Hands on the Wheel monitoring
+- *NEW* Speed Limit Control (with offset) @move-fast
+- *NEW* Map Data Turn Control (either SIM card data or tethered data from your phone)
 - 3 follow distances, 1.8, 1.45, 1.2 m/s (Toyota only) (Thanks @Keegan)
-- Red mph when braking (Thanks @alexandresato) 
+- Red mph when braking (Thanks @alexandresato) also for Honda's :-)
 - Legacy engage/disgage sounds
 - NEOS 20 for bootloop fix (Thanks @Erich)
-- *TORQUE CONTROLLER* 
-- Steering Fault Fix (Thanks @sshane)
+- *Torque controller* for select cars, (mostly Toyotas and Hondas)
+- 💯 degree steering fault fix (Thanks @sshane)
 - Device turns off 3 hours after shutting the car down
 - Modded fw detection and tuning for eps mod, Civics / CRV.
 
