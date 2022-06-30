@@ -115,6 +115,7 @@ class CarInterface(CarInterfaceBase):
       ret.wheelbase = CivicParams.WHEELBASE
       ret.centerToFront = CivicParams.CENTER_TO_FRONT
       ret.steerRatio = 15.38  # 10.93 is end-to-end spec
+      ret.lateralParams.torqueBP, ret.lateralParams.torqueV = [[0, 2564, 8000], [0, 2564, 3840]]
       if Params().get_bool('Torque'):
         MAX_LAT_ACCEL = 2.0 if eps_modified else 1.0
         friction = 0.04 if eps_modified else 0.1
@@ -127,7 +128,6 @@ class CarInterface(CarInterfaceBase):
         ret.lateralTuning.torque.friction = friction
       else:
         if eps_modified:
-          ret.lateralParams.torqueBP, ret.lateralParams.torqueV = [[0, 2564, 8000], [0, 2564, 3840]]
           ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.36], [0.108]] #minus 10% from 0.4, 0.12
         else:
           ret.lateralParams.torqueBP, ret.lateralParams.torqueV = [[0, 4096], [0, 4096]]  # TODO: determine if there is a dead zone at the top end
