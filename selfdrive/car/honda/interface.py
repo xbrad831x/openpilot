@@ -90,6 +90,7 @@ class CarInterface(CarInterfaceBase):
       ret.wheelbase = CivicParams.WHEELBASE
       ret.centerToFront = CivicParams.CENTER_TO_FRONT
       ret.steerRatio = 15.38  # 10.93 is end-to-end spec
+      ret.lateralParams.torqueBP, ret.lateralParams.torqueV = [[0, 2560, 8000], [0, 2560, 3840]]
       if Params().get_bool('Torque'):
         MAX_LAT_ACCEL = 1.7 if eps_modified else 1.0
         friction = 0.087112 if eps_modified else 0.1
@@ -102,7 +103,6 @@ class CarInterface(CarInterfaceBase):
         ret.lateralTuning.torque.friction = friction
       else:
         if eps_modified:
-          ret.lateralParams.torqueBP, ret.lateralParams.torqueV = [[0, 2560, 8000], [0, 2560, 3840]]
           ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.3], [0.1]]
         else:
           ret.lateralParams.torqueBP, ret.lateralParams.torqueV = [[0, 2560], [0, 2560]]
@@ -182,6 +182,7 @@ class CarInterface(CarInterfaceBase):
       ret.wheelbase = 2.66
       ret.centerToFront = ret.wheelbase * 0.41
       ret.steerRatio = 16.0  # 12.3 is spec end-to-end
+      ret.lateralParams.torqueBP, ret.lateralParams.torqueV = [[0, 2560, 10000], [0, 2560, 3840]]
       if Params().get_bool('Torque'):
         MAX_LAT_ACCEL = 3.3 if eps_modified else 1.0
         friction = 0.046 if eps_modified else 0.1
@@ -194,7 +195,6 @@ class CarInterface(CarInterfaceBase):
         ret.lateralTuning.torque.friction = friction
       else:
         if eps_modified:
-          ret.lateralParams.torqueBP, ret.lateralParams.torqueV = [[0, 2560, 10000], [0, 2560, 3840]]
           ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.21], [0.07]]
         else:
           ret.lateralParams.torqueBP, ret.lateralParams.torqueV = [[0, 3840], [0, 3840]]
