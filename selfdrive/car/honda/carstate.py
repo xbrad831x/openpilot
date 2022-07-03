@@ -193,12 +193,16 @@ class CarState(CarStateBase):
     elif self.CP.carFingerprint in (CAR.FREED, CAR.HRV):
       ret.standstill = not cp.vl["STANDSTILL"]["WHEELS_MOVING"]
       ret.doorOpen = bool(cp.vl["SCM_BUTTONS"]["DRIVERS_DOOR_OPEN"])
+    elif not self.cp.openpilotLongitudinalControl:
+      ret.brakeLightsDEPRECATED = bool(cp.vl["ACC_CONTROL"]["BRAKE_LIGHTS"] or ret.brakePressed or ret.brakeHoldActive)
+    elif self.CP.openpilotLongitudinalControl:
+      ret.brakeLightsDEPRECATED = bool(cp.vl["BRAKE_MODULE"]["BRAKE_PRESSED"] or ret.brakePressed)
     else:
       ret.standstill = not cp.vl["STANDSTILL"]["WHEELS_MOVING"]
       ret.doorOpen = any([cp.vl["DOORS_STATUS"]["DOOR_OPEN_FL"], cp.vl["DOORS_STATUS"]["DOOR_OPEN_FR"],
                           cp.vl["DOORS_STATUS"]["DOOR_OPEN_RL"], cp.vl["DOORS_STATUS"]["DOOR_OPEN_RR"]])
+    
     ret.seatbeltUnlatched = bool(cp.vl["SEATBELT_STATUS"]["SEATBELT_DRIVER_LAMP"] or not cp.vl["SEATBELT_STATUS"]["SEATBELT_DRIVER_LATCHED"])
-    ret.brakeLightsDEPRECATED = bool(cp.vl["ACC_CONTROL"]["BRAKE_LIGHTS"] or ret.brakePressed or ret.brakeHoldActive)
 
     steer_status = self.steer_status_values[cp.vl["STEER_STATUS"]["STEER_STATUS"]]
     ret.steerFaultPermanent = steer_status not in ("NORMAL", "NO_TORQUE_ALERT_1", "NO_TORQUE_ALERT_2", "LOW_SPEED_LOCKOUT", "TMP_FAULT")
@@ -208,6 +212,7 @@ class CarState(CarStateBase):
 
     if self.CP.openpilotLongitudinalControl:
       self.brake_error = cp.vl["STANDSTILL"]["BRAKE_ERROR_1"] or cp.vl["STANDSTILL"]["BRAKE_ERROR_2"]
+      
     ret.espDisabled = cp.vl["VSA_STATUS"]["ESP_DISABLED"] != 0
 
     ret.wheelSpeeds = self.get_wheel_speeds(

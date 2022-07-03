@@ -369,6 +369,7 @@ class CarInterface(CarInterfaceBase):
     ret.steerActuatorDelay = 0.1
     ret.steerRateCost = 0.5
     ret.steerLimitTimer = 0.8
+    ret.stoppingDecelRate = 0.8 # brake_travel/s while trying to stop
 
     return ret
 

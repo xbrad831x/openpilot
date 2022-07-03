@@ -17,7 +17,7 @@ const int HONDA_GAS_INTERCEPTOR_THRESHOLD = 492;
 #define HONDA_GET_INTERCEPTOR(msg) (((GET_BYTE((msg), 0) << 8) + GET_BYTE((msg), 1) + (GET_BYTE((msg), 2) << 8) + GET_BYTE((msg), 3)) / 2U)  // avg between 2 tracks
 const int HONDA_BOSCH_NO_GAS_VALUE = -30000; // value sent when not requesting gas
 const int HONDA_BOSCH_GAS_MAX = 2000;
-const int HONDA_BOSCH_ACCEL_MIN = -350; // max braking == -3.5m/s2
+const int HONDA_BOSCH_ACCEL_MIN = -400; // max braking == -4.0m/s2
 
 // Nidec has the powertrain bus on bus 0
 AddrCheckStruct honda_nidec_addr_checks[] = {
@@ -101,10 +101,13 @@ static int honda_rx_hook(CANPacket_t *to_push) {
   bool valid = addr_safety_check(to_push, &honda_rx_checks,
                                  honda_get_checksum, honda_compute_checksum, honda_get_counter);
 
-  const bool pcm_cruise = ((honda_hw == HONDA_BOSCH) && !honda_bosch_long) || \
-                          ((honda_hw == HONDA_NIDEC) && !gas_interceptor_detected);
-
   if (valid) {
+      const bool pcm_cruise = ((honda_hw == HONDA_BOSCH) && !honda_bosch_long) || \
+                              ((honda_hw == HONDA_NIDEC) && !gas_interceptor_detected);
+
+      int bus_rdr_car = (honda_hw == HONDA_BOSCH) ? 0 : 2;  // radar bus, car side
+      int pt_bus = (honda_hw == HONDA_BOSCH) ? 1 : 0;
+    
     int addr = GET_ADDR(to_push);
     int len = GET_LEN(to_push);
     int bus = GET_BUS(to_push);
@@ -142,7 +145,7 @@ static int honda_rx_hook(CANPacket_t *to_push) {
 
     // state machine to enter and exit controls for button enabling
     // 0x1A6 for the ILX, 0x296 for the Civic Touring
-    if (((addr == 0x1A6) || (addr == 0x296))) {
+    if (((addr == 0x1A6) || (addr == 0x296)) && (bus == pt_bus)) {
       int button = (GET_BYTE(to_push, 0) & 0xE0U) >> 5;
 
       // exit controls once main or cancel are pressed
@@ -211,8 +214,6 @@ static int honda_rx_hook(CANPacket_t *to_push) {
     }
 
     bool stock_ecu_detected = false;
-    int bus_rdr_car = (honda_hw == HONDA_BOSCH) ? 0 : 2;  // radar bus, car side
-    int pt_bus = (honda_hw == HONDA_BOSCH) ? 1 : 0;
 
     if (safety_mode_cnt > RELAY_TRNS_TIMEOUT) {
       // If steering controls messages are received on the destination bus, it's an indication
