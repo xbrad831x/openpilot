@@ -193,10 +193,6 @@ class CarState(CarStateBase):
     elif self.CP.carFingerprint in (CAR.FREED, CAR.HRV):
       ret.standstill = not cp.vl["STANDSTILL"]["WHEELS_MOVING"]
       ret.doorOpen = bool(cp.vl["SCM_BUTTONS"]["DRIVERS_DOOR_OPEN"])
-    elif not self.cp.openpilotLongitudinalControl:
-      ret.brakeLightsDEPRECATED = bool(cp.vl["ACC_CONTROL"]["BRAKE_LIGHTS"] or ret.brakePressed or ret.brakeHoldActive)
-    elif self.CP.openpilotLongitudinalControl:
-      ret.brakeLightsDEPRECATED = bool(cp.vl["BRAKE_MODULE"]["BRAKE_PRESSED"] or ret.brakePressed)
     else:
       ret.standstill = not cp.vl["STANDSTILL"]["WHEELS_MOVING"]
       ret.doorOpen = any([cp.vl["DOORS_STATUS"]["DOOR_OPEN_FL"], cp.vl["DOORS_STATUS"]["DOOR_OPEN_FR"],
