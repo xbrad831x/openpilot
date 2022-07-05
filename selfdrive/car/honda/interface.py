@@ -72,6 +72,7 @@ class CarInterface(CarInterfaceBase):
       ret.longitudinalTuning.kpV = [0.25]
       ret.longitudinalTuning.kiV = [0.05]
       ret.longitudinalActuatorDelayUpperBound = 0.5 # s
+      ret.stoppingDecelRate = 1.0 # brake_travel/s while trying to stop
     else:
       # default longitudinal tuning for all hondas
       ret.longitudinalTuning.kpBP = [0., 5., 35.]
@@ -369,7 +370,6 @@ class CarInterface(CarInterfaceBase):
     ret.steerActuatorDelay = 0.1
     ret.steerRateCost = 0.5
     ret.steerLimitTimer = 0.8
-    ret.stoppingDecelRate = 1.0 # brake_travel/s while trying to stop
 
     return ret
 
