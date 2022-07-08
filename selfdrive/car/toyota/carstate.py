@@ -29,8 +29,8 @@ class CarState(CarStateBase):
     # On cars with cp.vl["STEER_TORQUE_SENSOR"]["STEER_ANGLE"]
     # the signal is zeroed to where the steering angle is at start.
     # Need to apply an offset as soon as the steering angle measurements are both received
-    self.accurate_steer_angle_seen = False
-    self.angle_offset = FirstOrderFilter(None, 60.0, DT_CTRL, initialized=False)
+    #self.accurate_steer_angle_seen = False
+    #self.angle_offset = FirstOrderFilter(None, 60.0, DT_CTRL, initialized=False)
     self._init_traffic_signals()
     self.needs_angle_offset_torque = CP.carFingerprint not in TSS2_CAR #offset only if needed
     self.needs_angle_offset_zss = True #ZSS always needs offset
