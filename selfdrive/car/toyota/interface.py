@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from cereal import car
+from common.params import Params
 from common.conversions import Conversions as CV
 from panda import Panda
 from common.numpy_fast import interp
@@ -34,6 +35,7 @@ class CarInterface(CarInterfaceBase):
 
     ret.steerActuatorDelay = 0.12  # Default delay, Prius has larger delay
     ret.steerLimitTimer = 0.4
+    ret.hasZss = 0x23 in fingerprint[0] # Detect if ZSS is present
     ret.stoppingControl = False  # Toyota starts braking more when it thinks you want to stop
 
     stop_and_go = False
@@ -41,7 +43,16 @@ class CarInterface(CarInterfaceBase):
     steering_angle_deadzone_deg = 0.0
     set_torque_tune(ret.lateralTuning, torque_params['LAT_ACCEL_FACTOR'], torque_params['FRICTION'], steering_angle_deadzone_deg)
 
-    if candidate == CAR.PRIUS:
+    if candidate == CAR.PRIUS and not ret.hasZss:
+      stop_and_go = True
+      ret.wheelbase = 2.70
+      ret.steerRatio = 15.74   # unknown end-to-end spec
+      tire_stiffness_factor = 0.6371   # hand-tune
+      ret.mass = 3370. * CV.LB_TO_KG + STD_CARGO_KG
+      set_lat_tune(ret.lateralTuning, LatTunes.TORQUE, MAX_LAT_ACCEL=1.8, FRICTION=0.06, use_steering_angle=False) # hand-tune
+      ret.steerActuatorDelay = 0.3
+
+    elif candidate == CAR.PRIUS and ret.hasZss:
       stop_and_go = True
       ret.wheelbase = 2.70
       ret.steerRatio = 15.74   # unknown end-to-end spec
@@ -240,7 +251,7 @@ class CarInterface(CarInterfaceBase):
       ret.mass = 4305. * CV.LB_TO_KG + STD_CARGO_KG
       set_lat_tune(ret.lateralTuning, LatTunes.PID_J)
 
-    ret.steerRateCost = 1.
+    ret.steerRateCost = 0.5 if ret.hasZss else 1.0
     ret.centerToFront = ret.wheelbase * 0.44
 
     # TODO: get actual value, for now starting with reasonable value for

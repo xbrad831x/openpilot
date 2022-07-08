@@ -29,6 +29,8 @@ class LatTunes(Enum):
   INDI_RAV4_TSS2 = 17
   INDI_COROLLA_TSS2 = 18
   TORQUE = 19
+  INDI_PRIUS_ZSS = 20
+
 
 ###### LONG ######
 def set_long_tune(tune, name):
@@ -45,9 +47,9 @@ def set_long_tune(tune, name):
     tune.deadzoneBP = [0., 9.]
     tune.deadzoneV = [0., .15]
     tune.kpBP = [0., 5., 35.]
-    tune.kiBP = [0., 35.]
-    tune.kpV = [3.6, 2.4, 1.5]
-    tune.kiV = [0.54, 0.36]
+    tune.kiBP = [0., 5., 35.]
+    tune.kpV = [2.95, 2.4, 1.5]
+    tune.kiV = [0.28, 18/35, 0.36]
   else:
     raise NotImplementedError('This longitudinal tune does not exist')
 
@@ -116,6 +118,17 @@ def set_lat_tune(tune, name, MAX_LAT_ACCEL=2.5, FRICTION=0.01, steering_angle_de
     #tune.indi.timeConstantV = [0.1461, 0.2427, 0.27871, 0.312, 0,315, 0.32, 0.525, 0.6250, 0.85, 1.1, 1.2, 2.3, 2.6]
     tune.indi.actuatorEffectivenessBP = [10, 13, 14, 25, 33]
     tune.indi.actuatorEffectivenessV = [15, 13, 13, 15, 15]
+    
+  elif name == LatTunes.INDI_PRIUS_ZSS:
+    tune.init('indi')
+    tune.indi.innerLoopGainBP = [0.]
+    tune.indi.innerLoopGainV = [4.0]
+    tune.indi.outerLoopGainBP = [0.]
+    tune.indi.outerLoopGainV = [3.0]
+    tune.indi.timeConstantBP = [0.]
+    tune.indi.timeConstantV = [0.1]
+    tune.indi.actuatorEffectivenessBP = [0.]
+    tune.indi.actuatorEffectivenessV = [1.0]
 
   elif 'PID' in str(name):
     tune.init('pid')
