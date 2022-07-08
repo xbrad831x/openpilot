@@ -114,6 +114,7 @@ std::unordered_map<std::string, uint32_t> keys = {
     {"GitRemote", PERSISTENT},
     {"GsmApn", PERSISTENT},
     {"GsmRoaming", PERSISTENT},
+    {"HandsOnWheelMonitoring", PERSISTENT},
     {"HardwareSerial", PERSISTENT},
     {"HasAcceptedTerms", PERSISTENT},
     {"IMEI", PERSISTENT},
@@ -150,14 +151,20 @@ std::unordered_map<std::string, uint32_t> keys = {
     {"RecordFrontLock", PERSISTENT},  // for the internal fleet
     {"ReleaseNotes", PERSISTENT},
     {"ShouldDoUpdate", CLEAR_ON_MANAGER_START},
+    {"ShowDebugUI", PERSISTENT},
     {"SnoozeUpdate", CLEAR_ON_MANAGER_START | CLEAR_ON_IGNITION_OFF},
+    {"SpeedLimitControl", PERSISTENT},
+    {"SpeedLimitPercOffset", PERSISTENT},
     {"SshEnabled", PERSISTENT},
     {"SubscriberInfo", PERSISTENT},
     {"TermsVersion", PERSISTENT},
     {"Timezone", PERSISTENT},
     {"TrainingVersion", PERSISTENT},
+    {"TurnSpeedControl", PERSISTENT},
+    {"TurnVisionControl", PERSISTENT},
     {"UpdateAvailable", CLEAR_ON_MANAGER_START},
     {"UpdateFailedCount", CLEAR_ON_MANAGER_START},
+    {"UploadRaw", PERSISTENT},
     {"Version", PERSISTENT},
     {"VisionRadarToggle", PERSISTENT},
     {"ApiCache_Device", PERSISTENT},
@@ -177,6 +184,7 @@ std::unordered_map<std::string, uint32_t> keys = {
     {"Offroad_TemperatureTooHigh", CLEAR_ON_MANAGER_START},
     {"Offroad_UnofficialHardware", CLEAR_ON_MANAGER_START},
     {"Offroad_UpdateFailed", CLEAR_ON_MANAGER_START},
+    {"Torque", PERSISTENT},
 };
 
 } // namespace

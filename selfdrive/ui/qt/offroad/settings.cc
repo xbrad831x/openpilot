@@ -54,6 +54,12 @@ TogglesPanel::TogglesPanel(SettingsWindow *parent) : ListWidget(parent) {
       "../assets/offroad/icon_metric.png",
     },
     {
+      "UploadRaw",
+      "Upload Raw Logs",
+      "Upload full logs and full resolution video by default while on Wi-Fi. If not enabled, individual logs can be marked for upload at useradmin.comma.ai.",
+      "../assets/offroad/icon_network.png",
+    },
+    {
       "RecordFront",
       "Record and Upload Driver Camera",
       "Upload data from the driver facing camera and help improve the driver monitoring algorithm.",
@@ -70,6 +76,48 @@ TogglesPanel::TogglesPanel(SettingsWindow *parent) : ListWidget(parent) {
       "Disengage On Accelerator Pedal",
       "When enabled, pressing the accelerator pedal will disengage openpilot.",
       "../assets/offroad/icon_disengage_on_accelerator.svg",
+    },
+    {
+      "Torque",
+      "Use Torque Tune",
+      "Use Torque tuning values. For select models only..",
+      "../assets/offroad/icon_openpilot.png",
+    },
+    {
+      "HandsOnWheelMonitoring",
+      "Enable Hands on Wheel Monitoring",
+      "Monitor and alert when driver is not keeping the hands on the steering wheel.",
+      "../assets/offroad/icon_openpilot.png",
+    },
+    {
+      "TurnVisionControl",
+      "Enable vision based turn control",
+      "Use vision path predictions to estimate the appropiate speed to drive through turns ahead.",
+      "../assets/offroad/icon_road.png",
+    },
+    {
+      "SpeedLimitControl",
+      "Enable Speed Limit Control",
+      "Use speed limit signs information from map data and car interface to automatically adapt cruise speed to road limits.",
+      "../assets/offroad/icon_speed_limit.png",
+    },
+    {
+      "SpeedLimitPercOffset",
+      "Enable Speed Limit Offset",
+      "Set speed limit slightly higher than actual speed limit for a more natural drive.",
+      "../assets/offroad/icon_speed_limit.png",
+    },
+    {
+      "TurnSpeedControl",
+      "Enable Map Data Turn Control",
+      "Use curvature info from map data to define speed limits to take turns ahead",
+      "../assets/offroad/icon_openpilot.png",
+    },
+    {
+      "ShowDebugUI",
+      "Show debug UI elements",
+      "Show UI elements that aid debugging.",
+      "../assets/offroad/icon_calibration.png",
     },
 #ifdef ENABLE_MAPS
     {
@@ -97,9 +145,6 @@ TogglesPanel::TogglesPanel(SettingsWindow *parent) : ListWidget(parent) {
     auto toggle = new ParamControl(param, title, desc, icon, this);
     bool locked = params.getBool((param + "Lock").toStdString());
     toggle->setEnabled(!locked);
-    if (!locked) {
-      connect(uiState(), &UIState::offroadTransition, toggle, &ParamControl::setEnabled);
-    }
     addItem(toggle);
   }
 }
