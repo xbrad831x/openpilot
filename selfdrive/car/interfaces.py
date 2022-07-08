@@ -1,8 +1,9 @@
+import yaml
 import os
 import time
 from abc import abstractmethod, ABC
 from typing import Dict, Tuple, List
-
+from common.basedir import BASEDIR
 from cereal import car
 from common.kalman.simple_kalman import KF1D
 from common.realtime import DT_CTRL
@@ -18,6 +19,9 @@ EventName = car.CarEvent.EventName
 MAX_CTRL_SPEED = (V_CRUISE_MAX + 4) * CV.KPH_TO_MS
 ACCEL_MAX = 2.0
 ACCEL_MIN = -3.5
+TORQUE_PARAMS_PATH = os.path.join(BASEDIR, 'selfdrive/car/torque_data/params.yaml')
+TORQUE_OVERRIDE_PATH = os.path.join(BASEDIR, 'selfdrive/car/torque_data/override.yaml')
+TORQUE_SUBSTITUTE_PATH = os.path.join(BASEDIR, 'selfdrive/car/torque_data/substitute.yaml')
 
 
 # generic car and radar interfaces
@@ -82,6 +86,7 @@ class CarInterfaceBase(ABC):
     ret.minSteerSpeed = 0.
     ret.wheelSpeedFactor = 1.0
 
+    ret.maxLateralAccel = CarInterfaceBase.get_torque_params(candidate)['MAX_LAT_ACCEL_MEASURED']
     ret.pcmCruise = True     # openpilot's state is tied to the PCM's cruise state on most cars
     ret.minEnableSpeed = -1. # enable is done by stock ACC, so ignore this
     ret.steerRatioRear = 0.  # no rear steering, at least on the listed cars aboveA
@@ -103,6 +108,28 @@ class CarInterfaceBase(ABC):
     ret.longitudinalActuatorDelayUpperBound = 0.15
     ret.steerLimitTimer = 1.0
     return ret
+
+  @staticmethod
+  def get_torque_params(candidate, default=float('NaN')):
+    with open(TORQUE_SUBSTITUTE_PATH) as f:
+      sub = yaml.load(f, Loader=yaml.FullLoader)
+    if candidate in sub:
+      candidate = sub[candidate]
+
+    with open(TORQUE_PARAMS_PATH) as f:
+      params = yaml.load(f, Loader=yaml.FullLoader)
+    with open(TORQUE_OVERRIDE_PATH) as f:
+      params_override = yaml.load(f, Loader=yaml.FullLoader)
+
+    assert len(set(sub.keys()) & set(params.keys()) & set(params_override.keys())) == 0
+
+    if candidate in params_override:
+      out = params_override[candidate]
+    elif candidate in params:
+      out = params[candidate]
+    else:
+      raise NotImplementedError(f"Did not find torque params for {candidate}")
+    return {key:out[i] for i, key in enumerate(params['legend'])}
 
   @abstractmethod
   def _update(self, c: car.CarControl) -> car.CarState:

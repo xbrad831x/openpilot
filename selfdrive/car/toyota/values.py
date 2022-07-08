@@ -16,12 +16,14 @@ PEDAL_TRANSITION = 10. * CV.MPH_TO_MS
 class CarControllerParams:
   ACCEL_MAX = 1.5  # m/s2, lower than allowed 2.0 m/s2 for tuning reasons
   ACCEL_MIN = -3.5  # m/s2
+  # KRKeegan increase allowed PID accel for sluggish start
+  ACCEL_MAX_TSS2_VALS = [1.8, ACCEL_MAX]
+  ACCEL_MAX_TSS2_BP =   [0.0, 6.0]
 
   STEER_MAX = 1500
-  STEER_DELTA_UP = 10       # 1.5s time to peak torque
+  STEER_DELTA_UP = 15       # 1.5s time to peak torque
   STEER_DELTA_DOWN = 25     # always lower than 45 otherwise the Rav4 faults (Prius seems ok with 50)
   STEER_ERROR_MAX = 350     # max delta between torque cmd and torque motor
-
 
 class ToyotaFlags(IntFlag):
   HYBRID = 1

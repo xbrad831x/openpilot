@@ -17,6 +17,7 @@ from common.filter_simple import FirstOrderFilter
 from common.params import Params
 from common.realtime import DT_TRML, sec_since_boot
 from selfdrive.controls.lib.alertmanager import set_offroad_alert
+from selfdrive.controls.lib.pid import PIDController
 from selfdrive.hardware import EON, HARDWARE, PC, TICI
 from selfdrive.loggerd.config import get_available_percent
 from selfdrive.statsd import statlog
@@ -84,6 +85,83 @@ def read_thermal(thermal_config):
   dat.deviceState.ambientTempC = read_tz(thermal_config.ambient[0]) / thermal_config.ambient[1]
   dat.deviceState.pmicTempC = [read_tz(z) / thermal_config.pmic[1] for z in thermal_config.pmic[0]]
   return dat
+
+
+def setup_eon_fan():
+  os.system("echo 2 > /sys/module/dwc3_msm/parameters/otg_switch")
+
+
+last_eon_fan_val = None
+def set_eon_fan(val):
+  global last_eon_fan_val
+
+  if last_eon_fan_val is None or last_eon_fan_val != val:
+    bus = SMBus(7, force=True)
+    try:
+      i = [0x1, 0x3 | 0, 0x3 | 0x08, 0x3 | 0x10][val]
+      bus.write_i2c_block_data(0x3d, 0, [i])
+    except OSError:
+      # tusb320
+      if val == 0:
+        bus.write_i2c_block_data(0x67, 0xa, [0])
+      else:
+        bus.write_i2c_block_data(0x67, 0xa, [0x20])
+        bus.write_i2c_block_data(0x67, 0x8, [(val - 1) << 6])
+    bus.close()
+    last_eon_fan_val = val
+
+
+# temp thresholds to control fan speed - high hysteresis
+_TEMP_THRS_H = [50., 65., 80., 10000]
+# temp thresholds to control fan speed - low hysteresis
+_TEMP_THRS_L = [42.5, 57.5, 72.5, 10000]
+# fan speed options
+_FAN_SPEEDS = [0, 16384, 32768, 65535]
+
+
+def handle_fan_eon(controller, max_cpu_temp, fan_speed, ignition):
+  new_speed_h = next(speed for speed, temp_h in zip(_FAN_SPEEDS, _TEMP_THRS_H) if temp_h > max_cpu_temp)
+  new_speed_l = next(speed for speed, temp_l in zip(_FAN_SPEEDS, _TEMP_THRS_L) if temp_l > max_cpu_temp)
+
+  if new_speed_h > fan_speed:
+    # update speed if using the high thresholds results in fan speed increment
+    fan_speed = new_speed_h
+  elif new_speed_l < fan_speed:
+    # update speed if using the low thresholds results in fan speed decrement
+    fan_speed = new_speed_l
+
+  set_eon_fan(fan_speed // 16384)
+
+  return fan_speed
+
+
+def handle_fan_uno(controller, max_cpu_temp, fan_speed, ignition):
+  new_speed = int(interp(max_cpu_temp, [40.0, 80.0], [0, 80]))
+
+  if not ignition:
+    new_speed = min(30, new_speed)
+
+  return new_speed
+
+
+last_ignition = False
+def handle_fan_tici(controller, max_cpu_temp, fan_speed, ignition):
+  global last_ignition
+
+  controller.neg_limit = -(80 if ignition else 30)
+  controller.pos_limit = -(30 if ignition else 0)
+
+  if ignition != last_ignition:
+    controller.reset()
+
+  error = 70 - max_cpu_temp
+  fan_pwr_out = -int(controller.update(
+                     error=error,
+                     feedforward=interp(max_cpu_temp, [60.0, 100.0], [0, -80])
+                  ))
+
+  last_ignition = ignition
+  return fan_pwr_out
 
 
 def set_offroad_alert_if_changed(offroad_alert: str, show_alert: bool, extra_text: Optional[str]=None):
@@ -199,6 +277,9 @@ def thermald_thread(end_event, hw_queue):
   thermal_config = HARDWARE.get_thermal_config()
 
   fan_controller = None
+  
+  # TODO: use PI controller for UNO
+  controller = PIDController(k_p=0, k_i=4e-3, neg_limit=-80, pos_limit=0, rate=(1 / DT_TRML))
 
   while not end_event.is_set():
     sm.update(PANDA_STATES_TIMEOUT)
