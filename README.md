@@ -5,7 +5,7 @@
 - *NEW* Hands on the Wheel monitoring
 - *NEW* Speed Limit Control (with offset) @move-fast
 - *NEW* Map Data Turn Control (either SIM card data or tethered data from your phone)
-- 3 follow distances, 1.8, 1.45, 1.2 m/s (Toyota only) (Thanks @Keegan)
+- 3 follow distances, 1.8, 1.45, 1.2 /s (Toyota only) (Thanks @Keegan)
 - Red mph when braking (Thanks @alexandresato) also for Honda's :-)
 - Legacy engage/disgage sounds
 - NEOS 20 for bootloop fix (Thanks @Erich)
