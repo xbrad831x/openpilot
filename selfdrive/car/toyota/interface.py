@@ -7,7 +7,7 @@ from selfdrive.car import STD_CARGO_KG, scale_tire_stiffness, get_safety_config
 from selfdrive.car.interfaces import CarInterfaceBase
 
 EventName = car.CarEvent.EventName
-
+GearShifter = car.CarState.GearShifter
 
 class CarInterface(CarInterfaceBase):
   @staticmethod
@@ -241,7 +241,7 @@ class CarInterface(CarInterfaceBase):
     ret = self.CS.update(self.cp, self.cp_cam)
 
     # events
-    events = self.create_common_events(ret)
+    events = self.create_common_events(ret, extra_gears=[GearShifter.sport])
 
     if self.CP.openpilotLongitudinalControl:
       if ret.cruiseState.standstill and not ret.brakePressed and not self.CP.enableGasInterceptor:
