@@ -17,8 +17,8 @@ from selfdrive.swaglog import cloudlog
 LON_MPC_STEP = 0.2  # first step is 0.2s
 AWARENESS_DECEL = -0.2  # car smoothly decel at .2m/s^2 when user is distracted
 A_CRUISE_MIN = -1.2
-A_CRUISE_MAX_VALS = [1.6, 1.4, 1.0, 0.6, 0.3]  # Sets the limits of the planner accel, PID may exceed
-A_CRUISE_MAX_BP = [0., 5., 10., 20., 55.]
+A_CRUISE_MAX_VALS = [3.5, 1.7, 1.31, 0.95, 0.77, 0.67, 0.55, 0.47, 0.31, 0.13]  # Sets the limits of the planner accel, PID may exceed
+A_CRUISE_MAX_BP = [0., 3, 6., 8., 11., 15., 20., 25., 30., 55.] 
 
 # Lookup table for turns
 _A_TOTAL_MAX_V = [1.7, 3.2]
