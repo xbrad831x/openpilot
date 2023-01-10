@@ -276,9 +276,9 @@ class CarInterface(CarInterfaceBase):
     elif candidate in TSS2_CAR:
       set_long_tune(ret.longitudinalTuning, LongTunes.TSS2)
       # Improved longitudinal tune settings from sshane
-      ret.vEgoStopping = 0.25  # car is near 0.1 to 0.2 when car starts requesting stopping accel
-      ret.vEgoStarting = 0.25 # needs to be > or == vEgoStopping
-      ret.stoppingDecelRate = 0.3  # reach stopping target smoothly - seems to take 0.5 seconds to go from 0 to -0.4
+      ret.vEgoStopping = 0.2  # car is near 0.1 to 0.2 when car starts requesting stopping accel
+      ret.vEgoStarting = 0.6 # needs to be > or == vEgoStopping
+      ret.stoppingDecelRate = 0.009  # reach stopping target smoothly - seems to take 0.5 seconds to go from 0 to -0.4
     else:
       set_long_tune(ret.longitudinalTuning, LongTunes.TSS)
 

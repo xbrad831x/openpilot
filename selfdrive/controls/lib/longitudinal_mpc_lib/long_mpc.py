@@ -248,7 +248,7 @@ class LongitudinalMpc:
   def get_cost_multipliers(self, v_lead0, v_lead1):
     v_ego = self.x0[1]
     v_ego_bps = [0, 10]
-    TFs = [1.0, 1.45, 1.8]
+    TFs = [1.0, T_FOLLOW, 1.8]
     # KRKeegan adjustments to costs for different TFs
     # these were calculated using the test_longitudial.py deceleration tests
     a_change_tf = interp(self.desired_TF, TFs, [.1, 1., 1.1])
@@ -346,7 +346,7 @@ class LongitudinalMpc:
       y_dist = [1.25, 1.24, 1.23, 1.22, 1.21, 1.20, 1.18, 1.16, 1.13, 1.11, 1.09, 1.07, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05]
       self.desired_TF = np.interp(carstate.vEgo, x_vel, y_dist)
     elif carstate.distanceLines == 2: # Relaxed
-      self.desired_TF = 1.45
+      self.desired_TF = T_FOLLOW
     else:
       self.desired_TF = 1.8
 
