@@ -29,6 +29,7 @@ class CarState(CarStateBase):
 
     # KRKeegan - Add support for toyota distance button
     self.distance_btn = 0
+    self.lkaspressed_prev = False
 
   def update(self, cp, cp_cam):
     ret = car.CarState.new_message()
@@ -123,6 +124,14 @@ class CarState(CarStateBase):
       # KRKeegan - Add support for toyota distance button these cars have the acc_control on car can
       self.distance_btn = 1 if cp.vl["ACC_CONTROL"]["DISTANCE"] == 1 else 0
       ret.distanceLines = cp.vl["PCM_CRUISE_SM"]["DISTANCE_LINES"]
+    
+    if self.CP.carFingerprint in (TSS2_CAR - RADAR_ACC_CAR) and self.params.get_bool("ExperimentalModeSteeringWheel"):
+      self.lkaspressed = cp_cam.vl["LKAS_HUD"]["LDA_ON_MESSAGE"] == 1
+    else:
+      self.lkaspressed = False
+    if self.lkaspressed and not self.lkaspressed_prev:
+      self.params.put_bool('ExperimentalMode', not self.params.get_bool("ExperimentalMode"))
+    self.lkaspressed_prev = self.lkaspressed
 
     # some TSS2 cars have low speed lockout permanently set, so ignore on those cars
     # these cars are identified by an ACC_TYPE value of 2.
@@ -278,6 +287,7 @@ class CarState(CarStateBase):
         ("FORCE", "PRE_COLLISION"),
         ("ACC_TYPE", "ACC_CONTROL"),
         ("FCW", "ACC_HUD"),
+        ("LDA_ON_MESSAGE", "LKAS_HUD"),
       ]
       checks += [
         ("PRE_COLLISION", 33),

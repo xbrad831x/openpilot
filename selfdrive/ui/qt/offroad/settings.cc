@@ -73,6 +73,12 @@ TogglesPanel::TogglesPanel(SettingsWindow *parent) : ListWidget(parent) {
       tr("When enabled, pressing the accelerator pedal will disengage openpilot."),
       "../assets/offroad/icon_disengage_on_accelerator.svg",
     },
+    {
+      "Enable Experimental Mode Via Steering Wheel",
+      tr("Enable Experimental Mode by 'double clicking' the 'Lane Departure'/LKAS button on steering wheel"),
+      tr("Only works on Toyota/Lexus vehicles. This will override 'Conditional Experimental Mode'"),
+      "../assets/offroad/icon_openpilot.png",
+    },
 #ifdef ENABLE_MAPS
     {
       "NavSettingTime24h",
