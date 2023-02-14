@@ -38,10 +38,15 @@ def set_long_tune(tune, name):
   if name == LongTunes.TSS2 or name == LongTunes.PEDAL:
     tune.deadzoneBP = [0., 8.05]
     tune.deadzoneV = [.0, .14]
-    tune.kpBP = [0., 5., 20.]
-    tune.kpV = [1.3, 1.0, 0.7]
-    tune.kiBP = [0., 5., 12., 20., 27.]
-    tune.kiV = [.35, .23, .20, .17, .1]
+    tune.kpBP = [0., 5., 20., 30.]
+    tune.kpV = [1.3, 1.0, 0.7, 0.1]
+    tune.kiBP = [0., 5.6, 6.7, 8.3, 11.1, 19.4, 30., 33., 40.]
+    tune.kiV =  [.098, .126, .152, .164, .1826, .1874, .15, .09, .01]
+    #okay ish
+    #tune.kiBP = [0., 11., 17., 20., 24., 30., 33., 40.]
+    #tune.kiV = [.001, .21, .22, .23, .22, .1, .001, .0001]
+    #tune.kiBP = [0.,   6.,  8.,  11., 30., 33., 40.]
+    #tune.kiV = [.001, .07,  .15, .2,  .2,  .01, .0001]
   # Default longitudinal tune
   elif name == LongTunes.TSS:
     tune.deadzoneBP = [0., 9.]
