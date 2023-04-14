@@ -229,13 +229,13 @@ class CarInterface(CarInterfaceBase):
     tune.deadzoneV = [.0, .15]
     if candidate in TSS2_CAR or ret.enableGasInterceptor:
       tune.kpBP = [0., 5., 20., 30.]
-      tune.kpV = [1.3, 1.0, 0.7, 0.1]
-      tune.kiBP = [0., 5.6, 6.7, 8.3, 11.1, 19.4, 30., 33., 40.]
-      tune.kiV =  [.098, .126, .152, .164, .1826, .1874, .15, .09, .01]
+      tune.kpV = [1.3, 1.0, 0.7]
+      tune.kiBP = [0., 3., 4., 5., 12., 20., 23., 40.]
+      tune.kiV =  [.08, .16, .26, .215, .20, .166, .1, .006]
       if candidate in TSS2_CAR:
-        ret.vEgoStopping = 0.25  # car is near 0.1 to 0.2 when car starts requesting stopping accel
-        ret.vEgoStarting = 0.25 # needs to be > or == vEgoStopping
-        ret.stoppingDecelRate = 0.009  # reach stopping target smoothly
+        #ret.vEgoStopping = 0.25  # car is near 0.1 to 0.2 when car starts requesting stopping accel
+        ret.vEgoStarting = 0.1 # needs to be > or == vEgoStopping
+        ret.stoppingDecelRate = 0.04  # reach stopping target smoothly
     else:
       tune.kpBP = [0., 5., 35.]
       tune.kiBP = [0., 35.]
